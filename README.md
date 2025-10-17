@@ -15,7 +15,9 @@ You can take a Windows build directly from Linux.
 
 scythe-build is licensed under the [LGPL-2.1 license](./LICENSE).
 
-## How can use it?
+## Building
+
+Make sure you have the .NET 10 SDK packages installed.
 
 ```bash
 ./build/build.sh
