@@ -1,26 +1,25 @@
 # SCYTHE <img width="24" height="24" alt="icon" src="https://fkerimk.com/scythe/icon.png" /> build
 
-Simple scripts for building the Scythe.
+A simple fish script for building the Scythe.
 
 > [!CAUTION]  
-> Support for the Windows is partially available, and almost everything is compatible.
-However, the build script is outdated and has not been tested yet.
-Do not take a build on Windows.
+> Support for the Windows is no longer available.
 
 > [!NOTE]  
-> Cross-platform builds can be made from both operating systems.
-You can take a Windows build directly from Linux.
+> You can take a Windows build directly from Linux, you just can’t build from Windows.
 
 ## 🛠 License
 
 scythe-build is licensed under the [LGPL-2.1 license](./LICENSE).
 
-## Building
+## How to use?
 
 Make sure you have the .NET 10 SDK packages installed.
 
-```bash
-./build/build.sh
-```
+Builder is only available for the fish shell.
 
-More details are available in the [Scythe](https://github.com/fkerimk/scythe) repo.
+```bash
+git clone --recurse-submodules https://github.com/fkerimk/scythe.git
+cd scythe
+build/build.fish
+```
