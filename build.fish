@@ -44,11 +44,11 @@ if test $module_lib = true
     remexist bin
     echo Building (set_color cyan)scythe-lib (set_color normal)
     dotnet publish -v q -c Release
-    movexist bin/Release/netstandard2.1/publish/scythe-lib.dll bin
+    movexist bin/Release/*/publish/scythe-lib.dll bin
     remexist bin/Release
     checkdep bin/scythe-lib.dll scythe-lib (set_color red)failed to build, aborting
     cd ..
-    if test -e core/Assets/Scythe; copexist lib/bin/scythe-bin.dll core/Assets/Scythe; end
+    if test -e core/Assets/Scythe; copexist lib/bin/scythe-lib.dll core/Assets/Scythe; end
 end
 
 # scythe-util
@@ -57,7 +57,7 @@ if test $module_util = true
     remexist bin
     echo Building (set_color cyan)scythe-util (set_color normal)
     dotnet publish -v q -c Release -r linux-x64
-    movexist bin/Release/net10.0/linux-x64/publish/scythe-util bin
+    movexist bin/Release/*/linux-x64/publish/scythe-util bin
     checkdep bin/scythe-util scythe-util (set_color red)failed to build, aborting
     remexist bin/Release
     cd ..
@@ -68,19 +68,17 @@ if test $module_core = true
     echo Building (set_color cyan)scythe-core (set_color normal)
     checkdep core scythe-core (set_color red)failed to build, aborting
     checkdep $deps_unity scythe-core (set_color red)failed to build, aborting
-    remexist core_tmp
-    rsync -a --exclude=Library --exclude=Temp --exclude=Builds core/ core_tmp
-    $deps_unity -quit -noUpm -batchmode -nographics \
+    rsync -a --exclude=Library --exclude=Temp --exclude=Builds core/ core_build
+    $deps_unity -quit -batchmode \
         -logFile build/unity.log \
-        -projectPath core_tmp \
+        -projectPath core_build \
         -buildLinux $platform_linux \
         -buildWindows $platform_windows \
         -executeMethod BuildScript.Build >/dev/null 2>&1
-    if test $platform_linux = true; checkdep core_tmp/Builds/linux-x64/scythe-core.x86_64 scythe-core (set_color red)failed to build, aborting; end
-    if test $platform_windows = true; checkdep core_tmp/Builds/win-x64/scythe-core.exe scythe-core (set_color red)failed to build, aborting; end
+    if test $platform_linux = true; checkdep core_build/Builds/linux-x64/scythe-core.x86_64 scythe-core (set_color red)failed to build, aborting; end
+    if test $platform_windows = true; checkdep core_build/Builds/win-x64/scythe-core.exe scythe-core (set_color red)failed to build, aborting; end
     remkdir core/Builds
-    mv -f core_tmp/Builds/* core/Builds
-    rm -rf core_tmp
+    mv -f core_build/Builds/* core/Builds
 end
 
 # scythe-run
@@ -90,12 +88,12 @@ if test $module_run = true
     echo Building (set_color cyan)scythe-run (set_color normal)
     if test $platform_linux = true;
         dotnet publish -v q -c Release -r linux-x64
-        movexist bin/Release/net10.0/linux-x64/publish/scythe-run bin
+        movexist bin/Release/*/linux-x64/publish/scythe-run bin
         checkdep bin/scythe-run scythe-run (set_color red)failed to build, aborting
     end
     if test $platform_windows = true;
         dotnet publish -v q -c Release -r win-x64
-        movexist bin/Release/net10.0/win-x64/publish/scythe-run.exe bin
+        movexist bin/Release/*/win-x64/publish/scythe-run.exe bin
         checkdep bin/scythe-run.exe scythe-run (set_color red)failed to build, aborting
     end
     remexist bin/Release
