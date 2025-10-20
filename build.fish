@@ -68,8 +68,9 @@ if test $module_core = true
     echo Building (set_color cyan)scythe-core (set_color normal)
     checkdep core scythe-core (set_color red)failed to build, aborting
     checkdep $deps_unity scythe-core (set_color red)failed to build, aborting
+    remexist core_build/Assets
     rsync -a --exclude=Library --exclude=Temp --exclude=Builds core/ core_build
-    $deps_unity -quit -batchmode \
+    $deps_unity -quit -batchmode -nographics \
         -logFile build/unity.log \
         -projectPath core_build \
         -buildLinux $platform_linux \
